@@ -7,62 +7,6 @@ import java.awt.event.KeyListener;
 
 public class MazeView extends JPanel {
     private MazeModel mazeModel;
-    private int playerX;
-    private int playerY;
-
-    public MazeView(MazeModel mazeModel, int playerX, int playerY) {
-        this.mazeModel = mazeModel;
-        this.playerX = playerX;
-        this.playerY = playerY;
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        //code to draw the maze and player
-	super.paintComponent(g);
-
-        int width = getWidth();
-        int height = getHeight();
-        int cellWidth = width / mazeGenerator.getWidth();
-        int cellHeight = height / mazeGenerator.getHeight();
-
-        for (int x = 0; x < mazeGenerator.getWidth(); x++) {
-            for (int y = 0; y < mazeGenerator.getHeight(); y++) {
-                int x1 = x * cellWidth;
-                int y1 = y * cellHeight;
-                Cell cell = mazeGenerator.getCells()[x][y];
-
-                if (cell.north) {
-                    g.drawLine(x1, y1, x1 + cellWidth, y1);
-                }
-                if (cell.south) {
-                    g.drawLine(x1, y1 + cellHeight, x1 + cellWidth, y1 + cellHeight);
-                }
-                if (cell.west) {
-                    g.drawLine(x1, y1, x1, y1 + cellHeight);
-                }
-                if (cell.east) {
-                    g.drawLine(x1 + cellWidth, y1, x1 + cellWidth, y1 + cellHeight);
-                }
-            }
-        }
-
-        g.setColor(Color.RED);
-        g.fillOval(playerX * cellWidth + cellWidth / 4, playerY * cellHeight + cellHeight / 4, cellWidth / 2, cellHeight / 2);
-    
-    }
-}
-
-
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-
-public class MazeView extends JPanel {
-    private MazeModel mazeModel;
     private int playerXPosition;
     private int playerYPosition;
 
@@ -87,22 +31,22 @@ public class MazeView extends JPanel {
                 int x1 = x * cellWidth;
                 int y1 = y * cellHeight;
                 Cell cell= mazeModel.getCells()[x][y];
-		 if (cell.hasNorthWall) {
-                g.drawLine(x1, y1, x1 + cellWidth, y1);
-            }
-            if (cell.hasSouthWall) {
-                g.drawLine(x1, y1 + cellHeight, x1 + cellWidth, y1 + cellHeight);
-            }
-            if (cell.hasWestWall) {
-                g.drawLine(x1, y1, x1, y1 + cellHeight);
-            }
-            if (cell.hasEastWall) {
-                g.drawLine(x1 + cellWidth, y1, x1 + cellWidth, y1 + cellHeight);
-            }
-        }
-    }
+		if (cell.hasNorthWall) {
+		    g.drawLine(x1, y1, x1 + cellWidth, y1);
+		}
+		if (cell.hasSouthWall) {
+		    g.drawLine(x1, y1 + cellHeight, x1 + cellWidth, y1 + cellHeight);
+		}
+		if (cell.hasWestWall) {
+		    g.drawLine(x1, y1, x1, y1 + cellHeight);
+		}
+		if (cell.hasEastWall) {
+		    g.drawLine(x1 + cellWidth, y1, x1 + cellWidth, y1 + cellHeight);
+		}
+	    }
+	}
 
-    g.setColor(Color.RED);
-    g.fillOval(playerXPosition * cellWidth + cellWidth / 4, playerYPosition * cellHeight + cellHeight / 4, cellWidth / 2, cellHeight / 2);
+	g.setColor(Color.RED);
+	g.fillOval(playerXPosition * cellWidth + cellWidth / 4, playerYPosition * cellHeight + cellHeight / 4, cellWidth / 2, cellHeight / 2);
     }
 }

@@ -26,266 +26,6 @@ class Cell {
     }
 }
 
-public class MazeModel {
-    private int width;
-    private int height;
-    private Cell[][] cells;
-    private int playerXPosition;
-    private int playerYPosition;
-    private int startXPosition;
-    private int startYPosition;
-    private int endXPosition;
-    private int endYPosition;
-    private Random random;
-    private boolean foundUnvisited;
-
-    public MazeModel(int width, int height) {
-        this.width = width;
-        this.height = height;
-        random = new Random();
-        generate();
-    }
-
-    private void generate() {
-        cells = new Cell[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                cells[x][y] = new Cell();
-            }
-        }
-
-        // "Kill" phase
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
-                    continue;
-                }
-
-                if (x % 2 == 0 && y % 2 == 0) {
-                    int sides = 0;
-                    if (x > 0 && !cells[x - 1][y].isVisited) {
-                        sides++;
-                    }
-                    if (x < width - 1 && !cells[x + 1][y].isVisited) {
-                        sides++;
-                    }
-                    if (y > 0 && !cells[x][y - 1].isVisited) {
-                        sides++;
-                    }
-                    if (y < height - 1 && !cells[x][y + 1].isVisited) {
-                        sides++;
-                    }
-
-                    if (sides > 0) {
-                        List<Integer> neighbors = new ArrayList<>();
-                        if (x > 0 && !cells[x - 1][y].isVisited) {
-                            neighbors.add(Direction.NORTH);
-                        }
-                        if (x < width - 1 && !cells[x + 1][y].isVisited) {
-                            neighbors.add(Direction.SOUTH);
-                        }
-                        if (y > 0 && !cells[x][y - 1].isVisited) {
-                            neighbors.add(Direction.WEST);
-                        }
-                        if (y < height - 1 && !cells[x][y + 1].isVisited) {
-			    neighbors.add(Direction.EAST);
-			}
-
-                    int index = random.nextInt(neighbors.size());
-                    int direction = neighbors.get(index);
-
-                    if (direction == Direction.NORTH) {
-                        cells[x - 1][y].hasSouthWall = false;
-                        cells[x][y].hasNorthWall = false;
-                        cells[x - 1][y].isVisited = true;
-                        cells[x][y].isVisited = true;
-                    } else if (direction == Direction.SOUTH) {
-                        cells[x + 1][y].hasNorthWall = false;
-                        cells[x][y].hasSouthWall = false;
-                        cells[x + 1][y].isVisited = true;
-                        cells[x][y].isVisited = true;
-                    } else if (direction == Direction.WEST) {
-                        cells[x][y - 1].hasEastWall = false;
-                        cells[x][y].hasWestWall = false;
-                        cells[x][y - 1].isVisited = true;
-                        cells[x][y].isVisited = true;
-                    } else if (direction == Direction.EAST) {
-                        cells[x][y + 1].hasWestWall = false;
-                        cells[x][y].hasEastWall = false;
-                        cells[x][y + 1].isVisited = true;
-                        cells[x][y].isVisited = true;
-                    }
-                }
-            }
-        }
-    }
-
-    // "Hunt" phase
-    foundUnvisited = true;
-    while (foundUnvisited) {
-        foundUnvisited = false;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (!cells[x][y].isVisited) {
-                    foundUnvisited = true;
-                    int sides = 0;
-                    if (x > 0 && cells[x - 1][y].isVisited) {
-                        sides++;
-                    }
-                    if (x < width - 1 && cells[x + 1][y].isVisited) {
-                        sides++;
-                    }
-                    if (y > 0 && cells[x][y - 1].isVisited) {
-                        sides++;
-                    }
-                    if (y < height - 1 && cells[x][y + 1].isVisited) {
-                        sides++;
-                    }
-
-                    if (sides > 0) {
-                        List<Integer> neighbors = new ArrayList<>();
-                        if (x > 0 && cells[x - 1][y].isVisited) {
-                            neighbors.add(Direction.NORTH);
-                        }
-                        if (x < width - 1 && cells[x + 1][y].isVisited) {
-                            neighbors.add(Direction.SOUTH);
-                        }
-                        if (y > 0 && cells[x][y - 1].isVisited) {
-                            neighbors.add(Direction.WEST);
-                        }
-                        if (y < height - 1 && cells[x][y + 1].isVisited) {
-                            neighbors.add(Direction.EAST);
-                        }
-
-                        int index = random.nextInt(neighbors.size());
-                        int direction = neighbors.get(index);
-
-                        if (direction == Direction.NORTH) {
-                            cells[x - 1][y].hasSouthWall = false;
-                            cells[x][y].hasNorthWall = false;
-			    cells[x - 1][y].isVisited = true;
-			    cells[x][y].isVisited = true;
-			} else if (direction == Direction.SOUTH) {
-			    cells[x + 1][y].hasNorthWall = false;
-			    cells[x][y].hasSouthWall = false;
-			    cells[x + 1][y].isVisited = true;
-			    cells[x][y].isVisited = true;
-			} else if (direction == Direction.WEST) {
-			    cells[x][y - 1].hasEastWall = false;
-			    cells[x][y].hasWestWall = false;
-			    cells[x][y - 1].isVisited = true;
-			    cells[x][y].hasVisited = true;
-			} else if (direction == Direction.EAST) {
-			    cells[x][y + 1].hasWestWall = false;
-			    cells[x][y].hasEastWall = false;
-			    cells[x][y + 1].isVisited = true;
-			    cells[x][y].isVisited = true;
-			}
-		    }
-		}
-	    }
-	}
-    }
-    playerX = 1;
-    playerY = 1;
-    cells[playerX][playerY].isVisited = true;
-    // Set start and end positions
-    startX = 1;
-    startY = 1;
-    endX = width - 2;
-    endY = height - 2;
-    }
-}
-
-
-public void handleKeyInput(KeyEvent event) {
-    switch (event.getCode()) {
-    case UP:
-	if (!cells[playerX][playerY].north) {
-	    playerY--;
-	}
-	break;
-    case DOWN:
-	if (!cells[playerX][playerY].south) {
-	    playerY++;
-	}
-	break;
-    case LEFT:
-	if (!cells[playerX][playerY].west) {
-	    playerX--;
-	}
-	break;
-    case RIGHT:
-	if (!cells[playerX][playerY].east) {
-	    playerX++;
-	}
-	break;
-    }
-    if(playerX == width-2 && playerY == height-2){
-	System.out.println("Congratulations! You have reached the exit!");
-    }
-}
-
-
-    public int getPlayerX() {
-	return playerX;
-    }
-
-    public int getPlayerY() {
-	return playerY;
-    }
-
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Cell[][] getCells() {
-        return cells;
-    }
-
-    public boolean hasWall(int x, int y, Direction direction) {
-	switch (direction) {
-        case NORTH:
-            return cells[x][y].north;
-        case SOUTH:
-            return cells[x][y].south;
-        case EAST:
-            return cells[x][y].east;
-        case WEST:
-            return cells[x][y].west;
-	}
-	return false;
-    }
-
-    
-class Direction {
-    public static final int NORTH = 0;
-    public static final int EAST = 1;
-    public static final int SOUTH = 2;
-    public static final int WEST = 3;
-}
-
-class Cell {
-    boolean hasNorthWall;
-    boolean hasSouthWall;
-    boolean hasEastWall;
-    boolean hasWestWall;
-    boolean isVisited;
-
-    public Cell() {
-        hasNorthWall = true;
-        hasSouthWall = true;
-        hasEastWall = true;
-        hasWestWall = true;
-        isVisited = false;
-    }
-}
-
 
 
 public class MazeModel {
@@ -480,42 +220,44 @@ public void handleKeyInput(KeyEvent event) {
     if(playerX == width-2 && playerY == height-2){
 	System.out.println("Congratulations! You have reached the exit!");
     }
-}
 
 
-public int getPlayerX() {
-    return playerX;
-}
 
-public int getPlayerY() {
-    return playerY;
-}
-
-
-public int getWidth() {
-    return width;
-}
-
-public int getHeight() {
-    return height;
-}
-
-public Cell[][] getCells() {
-    return cells;
-}
-
-public boolean hasWall(int x, int y, Direction direction) {
-    switch (direction) {
-    case NORTH:
-	return cells[x][y].north;
-    case SOUTH:
-	return cells[x][y].south;
-    case EAST:
-	return cells[x][y].east;
-    case WEST:
-	return cells[x][y].west;
+    public int getPlayerX() {
+	return playerX;
     }
-    return false;
+
+    public int getPlayerY() {
+	return playerY;
+    }
+
+
+    public int getWidth() {
+	return width;
+    }
+
+    public int getHeight() {
+	return height;
+    }
+
+    public Cell[][] getCells() {
+	return cells;
+    }
+
+    public boolean hasWall(int x, int y, Direction direction) {
+	switch (direction) {
+	case NORTH:
+	    return cells[x][y].north;
+	case SOUTH:
+	    return cells[x][y].south;
+	case EAST:
+	    return cells[x][y].east;
+	case WEST:
+	    return cells[x][y].west;
+	}
+	return false;
+    }
+
 }
 
     
