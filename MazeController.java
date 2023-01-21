@@ -32,19 +32,19 @@ public class MazeController extends JFrame {
             //handle arrow key input
 	    if (e.getKeyCode() == KeyEvent.VK_UP) {
 		if (!mazeModel.getCells()[playerX][playerY].hasNorthWall) {
-		    mazeView.playerYPosition--;
+		    mazeView.getPlayerXPosition1();
 		}
 	    } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 		if (!mazeModel.getCells()[playerX][playerY].hasSouthWall) {
-		    mazeView.playerYPosition++;
+		    mazeView.getPlayerYPosition2();
 		}
 	    } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 		if (!mazeModel.getCells()[playerX][playerY].hasWestWall) {
-		    mazeView.playerXPosition--;
+		    mazeView.getPlayerXPosition1();
 		}
 	    } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 		if (!mazeModel.getCells()[playerX][playerY].hasEastWall) {
-		    mazeView.playerXPosition++;
+		    mazeView.getPlayerXPosition2();
 		}
 	    }
 	    //repaint the view

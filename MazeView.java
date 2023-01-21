@@ -45,8 +45,24 @@ public class MazeView extends JPanel {
 		}
 	    }
 	}
-
 	g.setColor(Color.RED);
 	g.fillOval(playerXPosition * cellWidth + cellWidth / 4, playerYPosition * cellHeight + cellHeight / 4, cellWidth / 2, cellHeight / 2);
     }
+    
+    public int getPlayerXPosition1() {
+	return playerXPosition--;
+    }
+
+    public int getPlayerYPosition1() {
+	return playerYPosition--;
+    }
+
+    public int getPlayerXPosition2() {
+	return playerXPosition++;
+    }
+
+    public int getPlayerYPosition2() {
+	return playerYPosition++;
+    }
+    
 }
