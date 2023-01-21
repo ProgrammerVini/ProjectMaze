@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javafx.scene.input.KeyEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+//import javafx.scene.input.KeyEvent;
     
 class Direction {
     public static final int NORTH = 0;
@@ -32,6 +34,8 @@ public class MazeModel {
     private int width;
     private int height;
     private Cell[][] cells;
+    private int playerX;
+    private int playerY;
     private int playerXPosition;
     private int playerYPosition;
     private int startXPosition;
@@ -192,37 +196,38 @@ public class MazeModel {
 	playerXPosition = startXPosition;
 	playerYPosition = startYPosition;
     }
-}
 
-public void handleKeyInput(KeyEvent event) {
-    switch (event.getCode()) {
-    case UP:
-	if (!cells[playerX][playerY].north) {
-	    playerY--;
+    
+    public void handleKeyInput(KeyEvent event) {
+	switch (event.getKeyCode()) {
+	case KeyEvent.VK_UP:
+	    if (!cells[playerX][playerY].hasNorthWall) {
+		playerY--;
+	    }
+	    break;
+	case KeyEvent.VK_DOWN:
+	    if (!cells[playerX][playerY].hasSouthWall) {
+		playerY++;
+	    }
+	    break;
+	case KeyEvent.VK_LEFT:
+	    if (!cells[playerX][playerY].hasWestWall) {
+		playerX--;
+	    }
+	    break;
+	case KeyEvent.VK_RIGHT:
+	    if (!cells[playerX][playerY].hasEastWall) {
+		playerX++;
+	    }
+	    break;
 	}
-	break;
-    case DOWN:
-	if (!cells[playerX][playerY].south) {
-	    playerY++;
+	if(playerX == width-2 && playerY == height-2){
+	    System.out.println("Congratulations! You have reached the exit!");
 	}
-	break;
-    case LEFT:
-	if (!cells[playerX][playerY].west) {
-	    playerX--;
-	}
-	break;
-    case RIGHT:
-	if (!cells[playerX][playerY].east) {
-	    playerX++;
-	}
-	break;
     }
-    if(playerX == width-2 && playerY == height-2){
-	System.out.println("Congratulations! You have reached the exit!");
-    }
+    
 
-
-
+    
     public int getPlayerX() {
 	return playerX;
     }
@@ -230,7 +235,7 @@ public void handleKeyInput(KeyEvent event) {
     public int getPlayerY() {
 	return playerY;
     }
-
+    
 
     public int getWidth() {
 	return width;
@@ -243,7 +248,7 @@ public void handleKeyInput(KeyEvent event) {
     public Cell[][] getCells() {
 	return cells;
     }
-
+    /*
     public boolean hasWall(int x, int y, Direction direction) {
 	switch (direction) {
 	case NORTH:
@@ -257,7 +262,7 @@ public void handleKeyInput(KeyEvent event) {
 	}
 	return false;
     }
-
+    */
 }
 
     
